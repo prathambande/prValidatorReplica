@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: Build-Images
     env: 
-      BUILD_NUMBER: ${{needs.Build-Images.outputs.BUILD_NUMBER}}
+      BUILD_NUMBER: "${{needs.Build-Images.outputs.BUILD_NUMBER}}"
     steps:
     - name: Azure CLI Login
       uses: azure/login@v2
