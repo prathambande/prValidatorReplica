@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: Build-Images
     env: 
-      BUILD_NUMBER: "${{needs.Build-Images.outputs.BUILD_NUMBER}}"
+      BUILD_NUMBER: ${{needs.Build-Images.outputs.BUILD_NUMBER}}
     steps:
     - name: Azure CLI Login
       uses: azure/login@v2
@@ -105,13 +105,13 @@ jobs:
   
     - name: Running Test pipeline
       run: |
+        echo ${{env.BUILD_NUMBER}}
         RUN_ID=$(az pipelines run \
           --name test_all \
           --organization https://dev.azure.com/prathambande \
           --project Playground \
           --query id \
-          --parameters "BuildNumber=$BUILD_NUMBER"
-        )
+          --parameters "BuildNumber='${{env.BUILD_NUMBER}}'"
         echo $RUN_ID 
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
     
