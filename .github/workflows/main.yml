@@ -44,11 +44,11 @@ jobs:
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
   
-  Build_Images:
+  Build-Images:
     runs-on: ubuntu-latest
     needs: Build-SDK
     outputs:
-      BuildNumber: ${{ steps.setOutput.outputs.MY_VAR }}
+      BUILD_NUMBER: ${{ steps.setBUILD_NUMBER.outputs.BUILD_NUMBER }}
     steps:
     - name: Azure CLI Login
       uses: azure/login@v2
@@ -58,6 +58,7 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   
     - name: Running Building Images pipeline
+      id: setBUILD_NUMBER
       run: |
         RUN_ID=$(az pipelines run \
           --name build_image \
@@ -92,9 +93,9 @@ jobs:
   
   Test:
     runs-on: ubuntu-latest
-    needs: Build_Images
+    needs: Build-Images
     env: 
-      BUILD_NUMBER: ${{needs.Build_Images.outputs.BUILD_NUMBER}}
+      BUILD_NUMBER: ${{needs.Build-Images.outputs.BUILD_NUMBER}}
     steps:
     - name: Azure CLI Login
       uses: azure/login@v2
@@ -112,6 +113,7 @@ jobs:
           --project Playground \
           --query id \
           --parameters "BuildNumber='$BUILD_NUMBER'"
+        )
         echo $RUN_ID 
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
     
