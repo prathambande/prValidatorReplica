@@ -34,10 +34,13 @@ jobs:
     
     - name: Checking for SDK pipeline completion 
       run: |
-        while [ "$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
-          echo "Build SDK is still running ... "
+        STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted]; do
+          echo $STATUS
           sleep 30
+          STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
         done
+        echo $STATUS
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
   
@@ -76,10 +79,13 @@ jobs:
     
     - name: Checking for Images pipeline completion 
       run: |
-        while [ "$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
-          echo "Build SDK is still running ... "
+        STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted]; do
+          echo $STATUS
           sleep 30
+          STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
         done
+        echo $STATUS
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
   
@@ -111,9 +117,12 @@ jobs:
     
     - name: Checking for Test pipeline completion 
       run: |
-        while [ "$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
-          echo "Build SDK is still running ... "
+        STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted]; do
+          echo $STATUS
           sleep 30
+          STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
         done
+        echo $STATUS
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
