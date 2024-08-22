@@ -44,7 +44,7 @@ jobs:
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
         echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
   
-  Build-Images:
+  Build_Images:
     runs-on: ubuntu-latest
     needs: Build-SDK
     outputs:
@@ -92,9 +92,9 @@ jobs:
   
   Test:
     runs-on: ubuntu-latest
-    needs: Build-Images
+    needs: Build_Images
     env: 
-      BUILD_NUMBER: ${{needs.Build-Images.outputs.BUILD_NUMBER}}
+      BUILD_NUMBER: ${{needs.Build_Images.outputs.BUILD_NUMBER}}
     steps:
     - name: Azure CLI Login
       uses: azure/login@v2
