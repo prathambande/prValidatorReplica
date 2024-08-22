@@ -110,7 +110,7 @@ jobs:
           --organization https://dev.azure.com/prathambande \
           --project Playground \
           --query id \
-          --parameters "BUILD_NUMBER=$BUILD_NUMBER"
+          --parameters "BuildNumber=$BUILD_NUMBER"
         )
         echo $RUN_ID 
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
