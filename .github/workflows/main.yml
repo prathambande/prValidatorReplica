@@ -34,7 +34,7 @@ jobs:
     
     - name: Checking for SDK pipeline completion 
       run: |
-        while [ "$(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
+        while [ "$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
           echo "Build SDK is still running ... "
           sleep 30
         done
@@ -76,7 +76,7 @@ jobs:
     
     - name: Checking for Images pipeline completion 
       run: |
-        while [ "$(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
+        while [ "$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
           echo "Build SDK is still running ... "
           sleep 30
         done
@@ -111,7 +111,7 @@ jobs:
     
     - name: Checking for Test pipeline completion 
       run: |
-        while [ "$(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
+        while [ "$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
           echo "Build SDK is still running ... "
           sleep 30
         done
