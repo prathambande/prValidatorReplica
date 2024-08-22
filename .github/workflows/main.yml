@@ -105,13 +105,13 @@ jobs:
   
     - name: Running Test pipeline
       run: |
-        echo ${{env.BUILD_NUMBER}}
+        echo $BUILD_NUMBER
         RUN_ID=$(az pipelines run \
           --name test_all \
           --organization https://dev.azure.com/prathambande \
           --project Playground \
           --query id \
-          --parameters "BuildNumber='${{env.BUILD_NUMBER}}'"
+          --parameters "BuildNumber='$BUILD_NUMBER'"
         echo $RUN_ID 
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
     
