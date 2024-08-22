@@ -35,7 +35,7 @@ jobs:
     - name: Checking for SDK pipeline completion 
       run: |
         STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
-        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted]; do
+        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted"]; do
           echo $STATUS
           sleep 30
           STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
@@ -80,7 +80,7 @@ jobs:
     - name: Checking for Images pipeline completion 
       run: |
         STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
-        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted]; do
+        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted"]; do
           echo $STATUS
           sleep 30
           STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
@@ -118,7 +118,7 @@ jobs:
     - name: Checking for Test pipeline completion 
       run: |
         STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
-        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted]; do
+        while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted"]; do
           echo $STATUS
           sleep 30
           STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
