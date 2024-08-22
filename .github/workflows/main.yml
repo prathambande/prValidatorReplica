@@ -22,10 +22,10 @@ jobs:
     - name: Running Building SDK pipeline
       run: |
         RUN_ID=$(az pipelines run \
-          --name build_sdk
-          --organization https://dev.azure.com/prathambande 
-          --project Playground
-          --query id
+          --name build_sdk \
+          --organization https://dev.azure.com/prathambande \
+          --project Playground \
+          --query id \
           --parameters "BranchName=${{ github.head_ref }}"
         )
         echo $RUN_ID
@@ -57,18 +57,18 @@ jobs:
     - name: Running Building Images pipeline
       run: |
         RUN_ID=$(az pipelines run \
-          --name build_image
-          --organization https://dev.azure.com/prathambande 
-          --project Playground
-          --query id
+          --name build_image \
+          --organization https://dev.azure.com/prathambande \
+          --project Playground \
+          --query id \
           --parameters "BranchName=${{ github.head_ref }}"
         )
         echo $RUN_ID 
         BUILD_NUMBER=$(az pipelines runs show \
-          --id $RUN_ID
-          --organization https://dev.azure.com/prathambande 
-          --project Playground
-          --query buildNumber
+          --id $RUN_ID \
+          --organization https://dev.azure.com/prathambande \
+          --project Playground \
+          --query buildNumber \
           -o tsv"
         )
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
@@ -100,10 +100,10 @@ jobs:
     - name: Running Test pipeline
       run: |
         RUN_ID=$(az pipelines run \
-          --name test_all
-          --organization https://dev.azure.com/prathambande 
-          --project Playground
-          --query id
+          --name test_all \
+          --organization https://dev.azure.com/prathambande \
+          --project Playground \
+          --query id \
           --parameters "BUILD_NUMBER=$BUILD_NUMBER"
         )
         echo $RUN_ID 
