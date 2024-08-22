@@ -72,7 +72,7 @@ jobs:
           --organization https://dev.azure.com/prathambande \
           --project Playground \
           --query buildNumber \
-          -o tsv"
+          -o tsv
         )
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
         echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_OUTPUT
