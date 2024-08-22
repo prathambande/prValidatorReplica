@@ -1,0 +1,119 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+
+jobs:
+  Build-SDK:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Azure CLI Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+    - name: Running Building SDK pipeline
+      run: |
+        RUN_ID=$(az pipelines run \
+          --name build_sdk
+          --organization https://dev.azure.com/prathambande 
+          --project Playground
+          --query id
+          --parameters "BranchName=${{ github.head_ref }}"
+        )
+        echo $RUN_ID
+        echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
+    
+    
+    - name: Checking for SDK pipeline completion 
+      run: |
+        while [ "$(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
+          echo "Build SDK is still running ... "
+          sleep 30
+        done
+        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
+  
+  Build-Images:
+    runs-on: ubuntu-latest
+    needs: Build-SDK
+    outputs:
+      BuildNumber: ${{ steps.setOutput.outputs.MY_VAR }}
+    steps:
+    - name: Azure CLI Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+    - name: Running Building Images pipeline
+      run: |
+        RUN_ID=$(az pipelines run \
+          --name build_image
+          --organization https://dev.azure.com/prathambande 
+          --project Playground
+          --query id
+          --parameters "BranchName=${{ github.head_ref }}"
+        )
+        echo $RUN_ID 
+        BUILD_NUMBER=$(az pipelines runs show \
+          --id $RUN_ID
+          --organization https://dev.azure.com/prathambande 
+          --project Playground
+          --query buildNumber
+          -o tsv"
+        )
+        echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
+        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+    
+    - name: Checking for Images pipeline completion 
+      run: |
+        while [ "$(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
+          echo "Build SDK is still running ... "
+          sleep 30
+        done
+        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
+  
+  
+  Test:
+    runs-on: ubuntu-latest
+    needs: Build-Images
+    env: 
+      BUILD_NUMBER: ${{needs.Build-Images.outputs.BUILD_NUMBER}}
+    steps:
+    - name: Azure CLI Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+    - name: Running Test pipeline
+      run: |
+        RUN_ID=$(az pipelines run \
+          --name test_all
+          --organization https://dev.azure.com/prathambande 
+          --project Playground
+          --query id
+          --parameters "BUILD_NUMBER=$BUILD_NUMBER"
+        )
+        echo $RUN_ID 
+        echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
+    
+    - name: Checking for Test pipeline completion 
+      run: |
+        while [ "$(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)" == "inProgress" ]; do
+          echo "Build SDK is still running ... "
+          sleep 30
+        done
+        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
