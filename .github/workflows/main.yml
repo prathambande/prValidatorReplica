@@ -38,8 +38,8 @@ jobs:
           echo "Build SDK is still running ... "
           sleep 30
         done
-        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
-        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
+        echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
   
   Build-Images:
     runs-on: ubuntu-latest
@@ -80,8 +80,8 @@ jobs:
           echo "Build SDK is still running ... "
           sleep 30
         done
-        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
-        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
+        echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
   
   
   Test:
@@ -115,5 +115,5 @@ jobs:
           echo "Build SDK is still running ... "
           sleep 30
         done
-        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
-        echo $(az pipelines run show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
+        echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+        echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
